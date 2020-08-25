@@ -17,9 +17,4 @@
     },
     "include": ["src"],
     "typeRoots": ["./typings", "./node_modules/@types/"]
-    // "baseUrl": "./src",
-    // "paths": {
-    //     "@modules/*": ["src/modules/*"],
-    //     "@services/*": ["src/services/*"]
-    // }
 }
