@@ -4,6 +4,9 @@ const theme: DefaultTheme = {
     backgroundsColor: {
         gray: '#C0C0C0',
     },
+    textColors: {
+        green: '#008000',
+    },
     appBackground: '#fff',
     fontStyles: {
         h1: `font-size:28px;

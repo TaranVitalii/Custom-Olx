@@ -6,6 +6,9 @@ declare module 'styled-components' {
         backgroundsColor: {
             gray: string;
         };
+        textColors: {
+            green: string;
+        };
         fontStyles: {
             h1: string;
             h2: string;
