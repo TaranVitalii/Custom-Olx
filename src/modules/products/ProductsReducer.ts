@@ -82,7 +82,7 @@ export const getProductFromOrder = createSelector(
     getOrderPiecesSelector,
     getProductsSelector,
     (order: createOrderListProps[] | null, products: productSummaryProps[] | []) => {
-        if (R.isNil(order) || R.isEmpty(order)) return null;
+        if (R.isNil(order)) return [];
 
         const updatedOrder = order
             .map((item) => {
@@ -95,6 +95,6 @@ export const getProductFromOrder = createSelector(
             })
             .filter((item) => !R.isNil(item));
 
-        return !R.isEmpty(updatedOrder) ? updatedOrder : null;
+        return updatedOrder;
     },
 );

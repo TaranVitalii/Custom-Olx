@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import moment from 'moment';

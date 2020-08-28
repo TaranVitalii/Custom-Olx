@@ -7,13 +7,14 @@ import useProductInfo from '../hooks/useProductInfo';
 import Container from '../../../components/Container';
 import locale from '../../../locale';
 import Theme from '../../../components/Theme';
+import IsEmpty from '../../../components/IsEmpty';
 
 const ProductInfo = () => {
     const { currentProduct, name, price, origin, createdAtFormated, updatedAtFormated } = useProductInfo();
 
     return (
         <Container>
-            {!R.isNil(currentProduct) ? (
+            {!R.isNil(currentProduct) && !R.isEmpty(currentProduct) ? (
                 <Content>
                     <Row>
                         <ProductField>{locale.name}</ProductField>
@@ -36,16 +37,20 @@ const ProductInfo = () => {
                         <ProductField>{origin}</ProductField>
                     </Row>
                 </Content>
+            ) : R.isEmpty(currentProduct) ? (
+                <Wrapper>
+                    <IsEmpty>{locale.productInfoIsEmpty}</IsEmpty>
+                </Wrapper>
             ) : (
-                <LoaderWrapper>
+                <Wrapper>
                     <Loader type="Grid" color={Theme.backgroundsColor.gray} height={80} width={80} />
-                </LoaderWrapper>
+                </Wrapper>
             )}
         </Container>
     );
 };
 
-const LoaderWrapper = styled.div`
+const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;

@@ -8,6 +8,8 @@ import Product from '../components/ProductCard';
 import Container from '../../../components/Container';
 import Theme from '../../../components/Theme';
 import useProducts from '../hooks/useProducts';
+import IsEmpty from '../../../components/IsEmpty';
+import locale from '../../../locale';
 
 const Products = () => {
     const { productsList } = useProducts();
@@ -15,8 +17,10 @@ const Products = () => {
     return (
         <Container>
             <Content>
-                {!R.isNil(productsList) ? (
+                {!R.isNil(productsList) && !R.isEmpty(productsList) ? (
                     productsList.map((item: productSummaryProps) => <Product key={item.id} product={item} />)
+                ) : R.isEmpty(productsList) ? (
+                    <IsEmpty>{locale.productsListIsEmpty}</IsEmpty>
                 ) : (
                     <Loader type="Grid" color={Theme.backgroundsColor.gray} height={80} width={80} />
                 )}
