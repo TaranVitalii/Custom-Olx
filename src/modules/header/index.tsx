@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ import Bag from './assets/bag.png';
 import { getTotalPrice } from '../products/ProductsReducer';
 
 const Header = () => {
-    const totalPrice = useSelector(getTotalPrice);
+    const totalPrice = useSelector(getTotalPrice, shallowEqual);
 
     return (
         <Container>

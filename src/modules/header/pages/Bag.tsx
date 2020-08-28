@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 
 import locale from '../../../locale';
@@ -9,8 +9,8 @@ import { getProductFromOrder, getTotalPrice } from '../../products/ProductsReduc
 import ProductInBagCard from '../components/ProductInBagCard';
 
 const Bag = () => {
-    const order = useSelector(getProductFromOrder);
-    const totalPrice = useSelector(getTotalPrice);
+    const order = useSelector(getProductFromOrder, shallowEqual);
+    const totalPrice = useSelector(getTotalPrice, shallowEqual);
 
     return (
         <>
