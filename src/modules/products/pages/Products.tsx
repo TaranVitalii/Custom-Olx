@@ -1,27 +1,25 @@
 import * as R from 'ramda';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import Loader from 'react-loader-spinner';
 import styled from 'styled-components';
 
 import { productSummaryProps } from '../../../interfaces';
 import Product from '../components/ProductCard';
-import { fetchProducts } from '../ProductsActions';
-import { getProductsSelector } from '../ProductsReducer';
 import Container from '../../../components/Container';
+import Theme from '../../../components/Theme';
+import useProducts from '../hooks/useProducts';
 
 const Products = () => {
-    const dispatch = useDispatch();
-    const productsList: productSummaryProps[] | null = useSelector(getProductsSelector);
-
-    useEffect(() => {
-        dispatch(fetchProducts());
-    }, []);
+    const { productsList } = useProducts();
 
     return (
         <Container>
             <Content>
-                {!R.isNil(productsList) &&
-                    productsList.map((item: productSummaryProps) => <Product key={item.id} product={item} />)}
+                {!R.isNil(productsList) ? (
+                    productsList.map((item: productSummaryProps) => <Product key={item.id} product={item} />)
+                ) : (
+                    <Loader type="Grid" color={Theme.backgroundsColor.gray} height={80} width={80} />
+                )}
             </Content>
         </Container>
     );
@@ -30,6 +28,7 @@ const Products = () => {
 const Content = styled.div`
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
 `;
 
