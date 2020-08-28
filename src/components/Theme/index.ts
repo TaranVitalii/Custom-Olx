@@ -6,6 +6,7 @@ const theme: DefaultTheme = {
     },
     textColors: {
         green: '#008000',
+        white: '#fff',
     },
     appBackground: '#fff',
     fontStyles: {

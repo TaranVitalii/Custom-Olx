@@ -8,6 +8,7 @@ declare module 'styled-components' {
         };
         textColors: {
             green: string;
+            white: string;
         };
         fontStyles: {
             h1: string;
