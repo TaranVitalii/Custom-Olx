@@ -3,6 +3,7 @@ import { DefaultTheme } from 'styled-components';
 const theme: DefaultTheme = {
     backgroundsColor: {
         gray: '#C0C0C0',
+        blackOpacity: 'rgba(0, 0, 0, 0.2)',
     },
     textColors: {
         green: '#008000',

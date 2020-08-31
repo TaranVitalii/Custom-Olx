@@ -5,6 +5,7 @@ declare module 'styled-components' {
         appBackground: string;
         backgroundsColor: {
             gray: string;
+            blackOpacity: string;
         };
         textColors: {
             green: string;
