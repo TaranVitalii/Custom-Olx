@@ -1,13 +1,23 @@
 import * as R from 'ramda';
 import { createSelector } from 'reselect';
 
-import { FETCH_PRODUCTS, FETCH_PRODUCT_BY_ID, ADD_TO_BAG } from './ProductsActions';
+import {
+    FETCH_PRODUCTS,
+    FETCH_PRODUCT_BY_ID,
+    ADD_TO_BAG,
+    REMOVE_FROM_ORDER,
+    INCREASE_PRODUCT_COUNT,
+    DECREASE_PRODUCT_COUNT,
+    UPDATE_PRODUCT_COUNT,
+} from './ProductsActions';
 import { successAction, failureAction } from '../../store/type';
-import calcAllPrice from './helpers/calcAllPrice';
+import { calcAllPrice, filterById } from './helpers';
 import { productSummaryProps, createOrderProps, createOrderListProps } from '../../interfaces';
 
+export const STATE_KEY = 'products';
+
 interface initialStateProps {
-    productsReducer: {
+    [STATE_KEY]: {
         productsList: Array<productSummaryProps>;
         currentProduct: productSummaryProps;
         order: createOrderProps;
@@ -18,7 +28,7 @@ const initialState = {
     productsList: null,
     currentProduct: null,
     order: {
-        pieces: null,
+        pieces: [],
     },
 };
 
@@ -48,12 +58,27 @@ export default function Products(state = initialState, action: any) {
                 productsList: null,
             };
         case successAction(ADD_TO_BAG):
+        case successAction(INCREASE_PRODUCT_COUNT):
+        case successAction(DECREASE_PRODUCT_COUNT):
+        case successAction(UPDATE_PRODUCT_COUNT):
             const updatedPieces = R.prop('payload', action);
-            console.log('sss', updatedPieces);
+
             return {
                 ...state,
                 order: {
                     pieces: updatedPieces,
+                },
+            };
+        case REMOVE_FROM_ORDER:
+            const productId: string | null = R.pathOr(null, ['payload', 'productId'], action);
+            const order: createOrderListProps[] = R.pathOr([], ['order', 'pieces'], state);
+
+            const filteredOrder = filterById(productId, order);
+
+            return {
+                ...state,
+                order: {
+                    pieces: filteredOrder,
                 },
             };
         default:
@@ -62,16 +87,16 @@ export default function Products(state = initialState, action: any) {
 }
 
 export const getProductsSelector = (state: initialStateProps): Array<productSummaryProps> =>
-    R.pathOr([], ['productsReducer', 'productsList'], state);
+    R.pathOr([], [STATE_KEY, 'productsList'], state);
 
 export const getCurrentProductSelector = (state: initialStateProps): productSummaryProps | null =>
-    R.pathOr(null, ['productsReducer', 'currentProduct'], state);
+    R.pathOr(null, [STATE_KEY, 'currentProduct'], state);
 
 export const getOrderPiecesSelector = (state: initialStateProps): createOrderListProps[] | null =>
-    R.pathOr(null, ['productsReducer', 'order', 'pieces'], state);
+    R.pathOr(null, [STATE_KEY, 'order', 'pieces'], state);
 
 export const getTotalPrice = (state: initialStateProps): number => {
-    const pieces = R.pathOr([], ['productsReducer', 'order', 'pieces'], state);
+    const pieces = R.pathOr([], [STATE_KEY, 'order', 'pieces'], state);
     const products = getProductsSelector(state);
     const totalCount = calcAllPrice(pieces, products);
 
