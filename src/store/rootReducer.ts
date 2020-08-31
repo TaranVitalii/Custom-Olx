@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
 
-import productsReducer from '../modules/products/ProductsReducer';
+import productsReducer, { STATE_KEY as PRODUCTS_STATE_KEY } from '../modules/products/ProductsReducer';
 
-export default combineReducers({ productsReducer });
+export default combineReducers({ [PRODUCTS_STATE_KEY]: productsReducer });
