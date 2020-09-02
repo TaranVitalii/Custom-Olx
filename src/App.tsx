@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeContext } from 'styled-components';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import theme from './components/Theme';
+import Store from './store';
+// Header components
+import Header from './modules/header';
+import Bag from './modules/header/pages/Bag';
+// Product components
+import Products from './modules/products/pages/Products';
+import ProductInfo from './modules/products/pages/ProductInfo';
+
+const App = () => (
+    <ThemeContext.Provider value={theme}>
+        <Store>
+            <Router>
+                <Switch>
+                    <Route exact path="/">
+                        <Header />
+
+                        <Products />
+                    </Route>
+                    <Route path="/products/:productId">
+                        <Header />
+
+                        <ProductInfo />
+                    </Route>
+                    <Route path="/bag">
+                        <Bag />
+                    </Route>
+                </Switch>
+            </Router>
+        </Store>
+    </ThemeContext.Provider>
+);
 
 export default App;
