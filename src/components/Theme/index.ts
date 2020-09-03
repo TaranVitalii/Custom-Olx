@@ -23,6 +23,9 @@ const theme: DefaultTheme = {
         p2: `font-size:18px;
         font-weight:400;
         line-height:22px;`,
+        p3: `font-size:16px;
+        font-weight:400;
+        line-height:20px;`,
     },
 };
 
