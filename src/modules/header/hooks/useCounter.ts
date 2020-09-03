@@ -1,6 +1,5 @@
 import * as R from 'ramda';
-import { useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { useCounterProps } from '../interfaces';
@@ -58,14 +57,18 @@ const useCounter = ({ productId, count }: useCounterProps) => {
         dispatch(updateProductCount(productId, updatedCount));
     };
 
-    return {
-        removeProductFromOrderHandler,
-        increaseOrderCountHandler,
-        decreaseOrderCountHandler,
-        onChangeTextInputHandler,
-        onBlurCountInputHandler,
-        updatedCount,
-    };
+    return useMemo(
+        () => ({
+            removeProductFromOrderHandler,
+            increaseOrderCountHandler,
+            decreaseOrderCountHandler,
+            onChangeTextInputHandler,
+            onBlurCountInputHandler,
+            updatedCount,
+        }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [productId, count, updatedCount],
+    );
 };
 
 export default useCounter;

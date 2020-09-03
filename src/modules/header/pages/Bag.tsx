@@ -17,6 +17,7 @@ const Bag = () => {
 
     return (
         <>
+            {!R.isNil(order) && !R.isEmpty(order) && <TotalPrice>{`${locale.totalPrice} ${totalPrice}`}</TotalPrice>}
             {!R.isNil(order) && !R.isEmpty(order) ? (
                 <ContainerWrapper>
                     {order.map((item: any) => (
@@ -32,7 +33,6 @@ const Bag = () => {
                     <Loader type="Grid" color={Theme.backgroundsColor.gray} height={80} width={80} />
                 </Wrapper>
             )}
-            {!R.isNil(order) && !R.isEmpty(order) && <TotalPrice>{`${locale.totalPrice} ${totalPrice}`}</TotalPrice>}
         </>
     );
 };
@@ -44,15 +44,18 @@ const Wrapper = styled.div`
 `;
 
 const ContainerWrapper = styled(Container)`
+    padding-left: 200px;
+    padding-right: 200px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 `;
 
 const TotalPrice = styled.div`
-    position: absolute;
-    top: 120px;
-    right: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
     color: ${({ theme }) => theme.textColors.green};
     ${({ theme }) => theme.fontStyles.h3};
 `;

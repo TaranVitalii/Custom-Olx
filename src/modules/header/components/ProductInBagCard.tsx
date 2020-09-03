@@ -30,20 +30,23 @@ const ProductInBagCard = ({ product }: updatedProductProps) => {
         <Container>
             <TopContent>
                 <ProductName>{name}</ProductName>
-                <CounterButton onClick={increaseOrderCountHandler}>+</CounterButton>
-                <CounterWrapper
-                    value={updatedCount}
-                    type="number"
-                    onChange={onChangeTextInputHandler}
-                    onBlur={onBlurCountInputHandler}
-                />
-                <CounterButton onClick={decreaseOrderCountHandler}>-</CounterButton>
-
                 <Image src={removeImage} onClick={removeProductFromOrderHandler} />
             </TopContent>
             <BottomContent>
                 <Date>{date}</Date>
-                <Price>${price}</Price>
+                <BottomContentWrapper>
+                    <CounterContainer>
+                        <CounterButton onClick={increaseOrderCountHandler}>+</CounterButton>
+                        <CounterWrapper
+                            value={updatedCount}
+                            type="number"
+                            onChange={onChangeTextInputHandler}
+                            onBlur={onBlurCountInputHandler}
+                        />
+                        <CounterButton onClick={decreaseOrderCountHandler}>-</CounterButton>
+                    </CounterContainer>
+                    <Price>${price}</Price>
+                </BottomContentWrapper>
             </BottomContent>
         </Container>
     );
@@ -66,6 +69,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
+    width: 350px;
     margin: 20px 20px;
     padding: 14px 14px;
     -webkit-box-shadow: 1px -1px 10px 1px rgba(94, 45, 15, 1);
@@ -80,11 +84,22 @@ const TopContent = styled.div`
     align-items: center;
 `;
 
+const CounterContainer = styled.div`
+    width: 100%;
+    padding-right: 14px;
+`;
+
 const BottomContent = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     padding-top: 8px;
+`;
+
+const BottomContentWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const ProductName = styled.div`
