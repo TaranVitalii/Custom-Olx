@@ -1,3 +1,5 @@
+import { pageProps } from '../../interfaces';
+
 const namespace = 'PRODUCTS';
 export const FETCH_PRODUCTS = `${namespace}/GET_PRODUCTS`;
 export const FETCH_PRODUCT_BY_ID = `${namespace}/FETCH_PRODUCT_BY_ID`;
@@ -6,11 +8,22 @@ export const REMOVE_FROM_ORDER = `${namespace}/REMOVE_FROM_ORDER`;
 export const INCREASE_PRODUCT_COUNT = `${namespace}/INCREASE_PRODUCT_COUNT`;
 export const DECREASE_PRODUCT_COUNT = `${namespace}/DECREASE_PRODUCT_COUNT`;
 export const UPDATE_PRODUCT_COUNT = `${namespace}/UPDATE_PRODUCT_COUNT`;
+export const FETCH_PRODUCTS_ORIGINS = `${namespace}/FETCH_PRODUCTS_ORIGINS`;
 
 export interface fetchProductByIdAction {
     type: typeof FETCH_PRODUCT_BY_ID;
     payload: {
         productId: string;
+    };
+}
+
+export interface fetchProductsAction {
+    type: typeof FETCH_PRODUCTS;
+    payload: {
+        page: number | null;
+        origins: string[] | null;
+        minPrice: number | null;
+        maxPrice: number | null;
     };
 }
 
@@ -50,11 +63,23 @@ export interface updateProductCountAction {
     };
 }
 
-export const fetchProducts = () => ({ type: FETCH_PRODUCTS });
+export const fetchProducts = ({ page, origins, minPrice, maxPrice }: pageProps) => ({
+    type: FETCH_PRODUCTS,
+    payload: {
+        page,
+        origins,
+        minPrice,
+        maxPrice,
+    },
+});
 
 export const fetchProductById = (productId: fetchProductByIdAction) => ({
     type: FETCH_PRODUCT_BY_ID,
     payload: { productId },
+});
+
+export const fetchProductsOrigins = () => ({
+    type: FETCH_PRODUCTS_ORIGINS,
 });
 
 export const addToBag = (productId: string) => ({

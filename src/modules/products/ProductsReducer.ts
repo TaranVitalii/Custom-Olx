@@ -9,16 +9,25 @@ import {
     INCREASE_PRODUCT_COUNT,
     DECREASE_PRODUCT_COUNT,
     UPDATE_PRODUCT_COUNT,
+    FETCH_PRODUCTS_ORIGINS,
 } from './ProductsActions';
 import { successAction, failureAction } from '../../store/type';
-import { calcAllPrice, filterById } from './helpers';
-import { productSummaryProps, createOrderProps, createOrderListProps } from '../../interfaces';
+import { calcAllPrice, filterById, calcPageCount } from './helpers';
+import {
+    productSummaryProps,
+    productsConfigProps,
+    createOrderProps,
+    createOrderListProps,
+    productsOriginsProps,
+} from '../../interfaces';
 
 export const STATE_KEY = 'products';
 
 interface initialStateProps {
     [STATE_KEY]: {
         productsList: Array<productSummaryProps>;
+        productsResponseConfig: productsConfigProps;
+        productsOrigins: productsOriginsProps;
         currentProduct: productSummaryProps;
         order: createOrderProps;
     };
@@ -26,7 +35,9 @@ interface initialStateProps {
 
 const initialState = {
     productsList: null,
+    productsResponseConfig: null,
     currentProduct: null,
+    productsOrigins: null,
     order: {
         pieces: [],
     },
@@ -36,10 +47,18 @@ export default function Products(state = initialState, action: any) {
     switch (action.type) {
         case successAction(FETCH_PRODUCTS):
             const productsList = R.path(['payload', 'items'], action);
+            const page = R.path(['payload', 'page'], action);
+            const perPage = R.path(['payload', 'perPage'], action);
+            const totalItems = R.path(['payload', 'totalItems'], action);
 
             return {
                 ...state,
                 productsList,
+                productsResponseConfig: {
+                    page,
+                    perPage,
+                    totalItems,
+                },
             };
         case failureAction(FETCH_PRODUCTS):
             return {
@@ -69,6 +88,13 @@ export default function Products(state = initialState, action: any) {
                     pieces: updatedPieces,
                 },
             };
+        case successAction(FETCH_PRODUCTS_ORIGINS):
+            const productsOrigins = R.path(['payload', 'items'], action);
+
+            return {
+                ...state,
+                productsOrigins,
+            };
         case REMOVE_FROM_ORDER:
             const productId: string | null = R.pathOr(null, ['payload', 'productId'], action);
             const order: createOrderListProps[] = R.pathOr([], ['order', 'pieces'], state);
@@ -94,6 +120,27 @@ export const getCurrentProductSelector = (state: initialStateProps): productSumm
 
 export const getOrderPiecesSelector = (state: initialStateProps): createOrderListProps[] | null =>
     R.pathOr(null, [STATE_KEY, 'order', 'pieces'], state);
+
+export const getProductsOrigins = (state: initialStateProps): productsOriginsProps[] | null =>
+    R.pathOr(null, [STATE_KEY, 'productsOrigins'], state);
+
+export const getProductsConfig = (state: initialStateProps): productsConfigProps | null =>
+    R.pathOr(null, [STATE_KEY, 'productsResponseConfig'], state);
+
+export const getProductsConfigSelector = createSelector(getProductsConfig, (productsConfig) => {
+    const totalItems: number | null = R.propOr(null, 'totalItems', productsConfig);
+    const perPage: number | null = R.propOr(null, 'perPage', productsConfig);
+    const currentPage: number = R.propOr(1, 'page', productsConfig);
+
+    const pageCount = calcPageCount(totalItems, perPage);
+
+    return {
+        currentPage,
+        pageCount,
+    };
+});
+
+export const getProductsOriginsSelector = createSelector(getProductsOrigins, (productsOrigins) => productsOrigins);
 
 export const getTotalPrice = (state: initialStateProps): number => {
     const pieces = R.pathOr([], [STATE_KEY, 'order', 'pieces'], state);

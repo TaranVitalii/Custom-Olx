@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import moment from 'moment';
@@ -22,16 +22,21 @@ const useProductInfo = () => {
 
     useEffect(() => {
         dispatch(fetchProductById(productId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return {
-        currentProduct,
-        name,
-        price,
-        origin,
-        createdAtFormated,
-        updatedAtFormated,
-    };
+    return useMemo(
+        () => ({
+            currentProduct,
+            name,
+            price,
+            origin,
+            createdAtFormated,
+            updatedAtFormated,
+        }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [productId, currentProduct],
+    );
 };
 
 export default useProductInfo;

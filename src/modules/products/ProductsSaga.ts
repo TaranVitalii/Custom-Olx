@@ -8,24 +8,28 @@ import {
     INCREASE_PRODUCT_COUNT,
     DECREASE_PRODUCT_COUNT,
     UPDATE_PRODUCT_COUNT,
+    FETCH_PRODUCTS_ORIGINS,
     increaseProductCountAction,
     decreaseProductCountAction,
     updateProductCountAction,
     fetchProductByIdAction,
+    fetchProductsAction,
     addToBagAction,
 } from './ProductsActions';
 import { getOrderPiecesSelector } from './ProductsReducer';
 import { checkProductExist, findProduct, increasePieceCount, decreasePieceCount, updatePieceCount } from './helpers';
-import { fetchProductsRequest, fetchProductByIdRequest } from '../../services';
+import { fetchProductsRequest, fetchProductByIdRequest, fetchProductOriginsRequest } from '../../services';
 import { successAction, failureAction } from '../../store/type';
 
 /**
  * Fetch products
  * */
-function* fetchProductsHandler() {
+function* fetchProductsHandler(action: fetchProductsAction) {
     try {
+        const { page, origins, maxPrice, minPrice } = R.prop('payload', action);
+
         // fetch get products
-        const result = yield call(fetchProductsRequest);
+        const result = yield call(fetchProductsRequest, { page, origins, maxPrice, minPrice });
 
         // check result exist
         if (result) {
@@ -35,6 +39,25 @@ function* fetchProductsHandler() {
         }
     } catch (e) {
         yield put({ type: failureAction(FETCH_PRODUCTS) });
+    }
+}
+
+/**
+ * Fetch products
+ * */
+function* fetchProductsOriginsHandler() {
+    try {
+        // fetch get products
+        const result = yield call(fetchProductOriginsRequest);
+
+        // check result exist
+        if (result) {
+            yield put({ type: successAction(FETCH_PRODUCTS_ORIGINS), payload: result });
+        } else {
+            yield put({ type: failureAction(FETCH_PRODUCTS_ORIGINS) });
+        }
+    } catch (e) {
+        yield put({ type: failureAction(FETCH_PRODUCTS_ORIGINS) });
     }
 }
 
@@ -170,6 +193,7 @@ function* updateProductCountSagaHandler(action: updateProductCountAction) {
 function* productsSaga() {
     yield all([
         takeEvery(FETCH_PRODUCTS, fetchProductsHandler),
+        takeEvery(FETCH_PRODUCTS_ORIGINS, fetchProductsOriginsHandler),
         takeEvery(FETCH_PRODUCT_BY_ID, fetchProductByIdHandler),
         takeEvery(ADD_TO_BAG, addToBagSagaHandler),
         takeEvery(INCREASE_PRODUCT_COUNT, increaseProductCountSagaHandler),

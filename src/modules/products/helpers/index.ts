@@ -5,3 +5,5 @@ export { default as filterById } from './filterById';
 export { default as findProduct } from './findProduct';
 export { default as increasePieceCount } from './increasePieceCount';
 export { default as updatePieceCount } from './updatePieceCount';
+export { default as calcPageCount } from './calcPageCount';
+export { default as createPageList } from './createPageList';
