@@ -1,4 +1,4 @@
-import { pageProps } from '../../interfaces';
+import { pageProps } from 'interfaces';
 
 const namespace = 'PRODUCTS';
 export const FETCH_PRODUCTS = `${namespace}/GET_PRODUCTS`;

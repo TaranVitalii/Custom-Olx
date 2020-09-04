@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { inputPriceProps } from '../../../interfaces';
+import { inputPriceProps } from 'interfaces';
+
+const PriceInput = ({ onBlurHandler, placeholderValue }: inputPriceProps) => (
+    <Input type="number" onBlur={onBlurHandler} placeholder={placeholderValue} />
+);
 
 const Input = styled.input`
     width: 100px;
@@ -14,9 +18,5 @@ const Input = styled.input`
         margin: 0;
     }
 `;
-
-const PriceInput = ({ onBlurHandler, placeholderValue }: inputPriceProps) => (
-    <Input type="number" onBlur={onBlurHandler} placeholder={placeholderValue} />
-);
 
 export default PriceInput;

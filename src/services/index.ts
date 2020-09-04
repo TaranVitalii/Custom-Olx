@@ -1,9 +1,9 @@
 import axios from 'axios';
 import * as R from 'ramda';
 
-import { URLS } from '../models';
-import { pageProps } from '../interfaces';
-import makeStringFromArray from '../helpers';
+import { URLS } from 'models';
+import { pageProps } from 'interfaces';
+import makeStringFromArray from 'helpers';
 
 export const fetchProductsRequest = async ({ page = 1, origins, maxPrice, minPrice }: pageProps) => {
     try {

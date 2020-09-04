@@ -1,6 +1,16 @@
 import * as R from 'ramda';
 import { createSelector } from 'reselect';
 
+import { successAction, failureAction } from 'store/type';
+import {
+    productSummaryProps,
+    productsConfigProps,
+    createOrderProps,
+    createOrderListProps,
+    productsOriginsProps,
+} from 'interfaces';
+
+import { calcAllPrice, filterById, calcPageCount } from './helpers';
 import {
     FETCH_PRODUCTS,
     FETCH_PRODUCT_BY_ID,
@@ -11,15 +21,6 @@ import {
     UPDATE_PRODUCT_COUNT,
     FETCH_PRODUCTS_ORIGINS,
 } from './ProductsActions';
-import { successAction, failureAction } from '../../store/type';
-import { calcAllPrice, filterById, calcPageCount } from './helpers';
-import {
-    productSummaryProps,
-    productsConfigProps,
-    createOrderProps,
-    createOrderListProps,
-    productsOriginsProps,
-} from '../../interfaces';
 
 export const STATE_KEY = 'products';
 

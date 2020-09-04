@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { createOrderListProps } from '../../../interfaces';
+import { createOrderListProps } from 'interfaces';
 
 const filterById = (productId: string | null, pieces: createOrderListProps[]): createOrderListProps[] => {
     const updatedPieces = pieces.filter((piece) => {

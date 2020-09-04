@@ -3,9 +3,9 @@ import { useSelector, shallowEqual } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import locale from '../../locale';
-import Bag from './assets/bag.png';
+import locale from 'locale';
 
+import Bag from './assets/bag.png';
 import { getTotalPrice } from '../products/ProductsReducer';
 
 const Header = () => {

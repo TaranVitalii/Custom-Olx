@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { createOrderListProps } from '../../../interfaces';
+import { createOrderListProps } from 'interfaces';
 
 const checkProductExist = (productId: string | null, pieces: createOrderListProps[]) => {
     if (!pieces) return false;

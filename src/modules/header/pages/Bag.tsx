@@ -4,12 +4,13 @@ import Loader from 'react-loader-spinner';
 import { useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 
-import locale from '../../../locale';
-import Container from '../../../components/Container';
-import { getProductFromOrder, getTotalPrice } from '../../products/ProductsReducer';
+import locale from 'locale';
+import Container from 'components/Container';
+import { getProductFromOrder, getTotalPrice } from 'modules/products/ProductsReducer';
+import IsEmpty from 'components/IsEmpty';
+import Theme from 'components/Theme';
+
 import ProductInBagCard from '../components/ProductInBagCard';
-import IsEmpty from '../../../components/IsEmpty';
-import Theme from '../../../components/Theme';
 
 const Bag = () => {
     const order = useSelector(getProductFromOrder, shallowEqual);

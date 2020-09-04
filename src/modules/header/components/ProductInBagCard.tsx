@@ -3,10 +3,11 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { updatedProductProps } from '../../../interfaces';
+import { updatedProductProps } from 'interfaces';
+import CounterButton from 'components/Counter/Button';
+import CounterInput from 'components/Counter/Input';
+
 import removeImage from '../assets/removeImage.png';
-import CounterButton from '../../../components/Counter/Button';
-import CounterInput from '../../../components/Counter/Input';
 import useCounter from '../hooks/useCounter';
 
 const ProductInBagCard = ({ product }: updatedProductProps) => {

@@ -2,13 +2,14 @@ import * as R from 'ramda';
 import { useEffect, useState, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { useCounterProps } from '../interfaces';
 import {
     removeFromOrder,
     increaseProductCount,
     decreaseProductCount,
     updateProductCount,
-} from '../../products/ProductsActions';
+} from 'modules/products/ProductsActions';
+
+import { useCounterProps } from '../interfaces';
 
 const useCounter = ({ productId, count }: useCounterProps) => {
     const dispatch = useDispatch();

@@ -1,6 +1,9 @@
 import * as R from 'ramda';
 import { all, takeEvery, call, put, select } from 'redux-saga/effects';
 
+import { fetchProductsRequest, fetchProductByIdRequest, fetchProductOriginsRequest } from 'services';
+import { successAction, failureAction } from 'store/type';
+
 import {
     FETCH_PRODUCTS,
     FETCH_PRODUCT_BY_ID,
@@ -18,8 +21,6 @@ import {
 } from './ProductsActions';
 import { getOrderPiecesSelector } from './ProductsReducer';
 import { checkProductExist, findProduct, increasePieceCount, decreasePieceCount, updatePieceCount } from './helpers';
-import { fetchProductsRequest, fetchProductByIdRequest, fetchProductOriginsRequest } from '../../services';
-import { successAction, failureAction } from '../../store/type';
 
 /**
  * Fetch products

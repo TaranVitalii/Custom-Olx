@@ -3,11 +3,12 @@ import React from 'react';
 import Loader from 'react-loader-spinner';
 import styled from 'styled-components';
 
-import locale from '../../../locale';
-import { productSummaryProps } from '../../../interfaces';
-import Container from '../../../components/Container';
-import Theme from '../../../components/Theme';
-import IsEmpty from '../../../components/IsEmpty';
+import Container from 'components/Container';
+import Theme from 'components/Theme';
+import IsEmpty from 'components/IsEmpty';
+import locale from 'locale';
+import { productSummaryProps } from 'interfaces';
+
 import Origin from '../components/Origin';
 import Product from '../components/ProductCard';
 import PagesListCounter from '../components/PagesListCounter';

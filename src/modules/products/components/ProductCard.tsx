@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { productsListProps } from '../../../interfaces';
+import { productsListProps } from 'interfaces';
+
 import ShopingBag from '../assets/shopping-bag.png';
 import { addToBag } from '../ProductsActions';
 

@@ -1,14 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import PriceInput from './PriceInput';
-import { MaxMinProps } from '../../../interfaces';
-import locale from '../../../locale';
+import { MaxMinProps } from 'interfaces';
+import locale from 'locale';
 
-const PriceWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-`;
+import PriceInput from './PriceInput';
 
 const MaxMinPrice = ({ onBlurMinPriceHandler, onBlurMaxPriceHandler }: MaxMinProps) => (
     <PriceWrapper>
@@ -16,5 +12,10 @@ const MaxMinPrice = ({ onBlurMinPriceHandler, onBlurMaxPriceHandler }: MaxMinPro
         <PriceInput placeholderValue={locale.maxPrice} onBlurHandler={onBlurMaxPriceHandler} />
     </PriceWrapper>
 );
+
+const PriceWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
 
 export default MaxMinPrice;

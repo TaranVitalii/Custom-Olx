@@ -17,8 +17,8 @@ const useProductInfo = () => {
     const createdAt: string | null = R.propOr(null, 'createdAt', currentProduct);
     const updatedAt: string | null = R.propOr(null, 'updatedAt', currentProduct);
     const origin: string | null = R.propOr(null, 'origin', currentProduct);
-    const createdAtFormated = moment(createdAt).format('LL');
-    const updatedAtFormated = moment(updatedAt).format('LL');
+    const createdAtFormatted = moment(createdAt).format('LL');
+    const updatedAtFormatted = moment(updatedAt).format('LL');
 
     useEffect(() => {
         dispatch(fetchProductById(productId));
@@ -31,8 +31,8 @@ const useProductInfo = () => {
             name,
             price,
             origin,
-            createdAtFormated,
-            updatedAtFormated,
+            createdAtFormatted,
+            updatedAtFormatted,
         }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [productId, currentProduct],

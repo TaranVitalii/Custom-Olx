@@ -5,21 +5,6 @@ interface pageCountProps {
     isCurrentPage: boolean;
 }
 
-const PageCount = styled.div<pageCountProps>`
-    padding: 5px 5px;
-    margin: 2px;
-    border-radius: 8px;
-    cursor: default;
-    color: ${({ theme, isCurrentPage }) => (isCurrentPage ? theme.textColors.white : `black`)};
-    background-color: ${({ theme, isCurrentPage }) => (isCurrentPage ? `black` : theme.backgroundsColor.gray)};
-`;
-
-const Container = styled.div`
-    padding-top: 20px;
-    display: flex;
-    justify-content: center;
-`;
-
 interface pageListProps {
     pageList: number[];
     currentPage: number;
@@ -35,5 +20,20 @@ const PagesListCounter = ({ pageList, currentPage, setPage }: pageListProps) => 
         ))}
     </Container>
 );
+
+const PageCount = styled.div<pageCountProps>`
+    padding: 5px 5px;
+    margin: 2px;
+    border-radius: 8px;
+    cursor: default;
+    color: ${({ theme, isCurrentPage }) => (isCurrentPage ? theme.textColors.white : `black`)};
+    background-color: ${({ theme, isCurrentPage }) => (isCurrentPage ? `black` : theme.backgroundsColor.gray)};
+`;
+
+const Container = styled.div`
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+`;
 
 export default PagesListCounter;

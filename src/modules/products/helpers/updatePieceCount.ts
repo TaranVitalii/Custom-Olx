@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { createOrderListProps } from '../../../interfaces';
+import { createOrderListProps } from 'interfaces';
 
 const updatePieceCount = (pieces: createOrderListProps[], productId: string, updatedCount: number) =>
     pieces.map((piece: createOrderListProps) => {

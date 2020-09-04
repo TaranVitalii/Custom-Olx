@@ -2,7 +2,8 @@ import * as R from 'ramda';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
-import { productSummaryProps, productsOriginsProps, productsPageProps } from '../../../interfaces';
+import { productSummaryProps, productsOriginsProps, productsPageProps } from 'interfaces';
+
 import { fetchProducts, fetchProductsOrigins } from '../ProductsActions';
 import { getProductsSelector, getProductsOriginsSelector, getProductsConfigSelector } from '../ProductsReducer';
 
