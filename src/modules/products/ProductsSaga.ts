@@ -90,7 +90,7 @@ function* addToBagSagaHandler(action: addToBagAction) {
         const productId: string | null = R.pathOr(null, ['payload', 'productId'], action);
         const pieces = yield select(getOrderPiecesSelector);
 
-        if (!!productId) {
+        if (!R.isNil(productId)) {
             const productExist = checkProductExist(productId, pieces);
 
             if (productExist) {

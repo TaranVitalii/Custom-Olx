@@ -6,41 +6,29 @@ import { pageProps } from 'interfaces';
 import makeStringFromArray from 'helpers';
 
 export const fetchProductsRequest = async ({ page = 1, origins, maxPrice, minPrice }: pageProps) => {
-    try {
-        const response = await axios(URLS.FETCH_PRODUCTS, {
-            params: {
-                page,
-                origins: makeStringFromArray(origins),
-                maxPrice,
-                minPrice,
-            },
-        });
-        const data = R.prop('data', response);
+    const response = await axios(URLS.FETCH_PRODUCTS, {
+        params: {
+            page,
+            origins: makeStringFromArray(origins),
+            maxPrice,
+            minPrice,
+        },
+    });
+    const data = R.prop('data', response);
 
-        return data;
-    } catch (e) {
-        return null;
-    }
+    return data;
 };
 
 export const fetchProductByIdRequest = async (id: any) => {
-    try {
-        const response = await axios(URLS.FETCH_PRODUCT_BY_ID + id);
-        const data = R.prop('data', response);
+    const response = await axios(URLS.FETCH_PRODUCT_BY_ID + id);
+    const data = R.prop('data', response);
 
-        return data;
-    } catch (e) {
-        return null;
-    }
+    return data;
 };
 
 export const fetchProductOriginsRequest = async () => {
-    try {
-        const response = await axios(URLS.FETCH_PRODUCTS_ORIGINS);
-        const data = R.prop('data', response);
+    const response = await axios(URLS.FETCH_PRODUCTS_ORIGINS);
+    const data = R.prop('data', response);
 
-        return data;
-    } catch (e) {
-        return null;
-    }
+    return data;
 };

@@ -19,57 +19,55 @@ const useCounter = ({ productId, count }: useCounterProps) => {
         setUpdatedCount(count);
     }, [count]);
 
-    /**
-     * Remove Product from order
-     */
-    const removeProductFromOrderHandler = () => dispatch(removeFromOrder(productId));
+    return useMemo(() => {
+        /**
+         * Remove Product from order
+         */
+        const removeProductFromOrderHandler = () => dispatch(removeFromOrder(productId));
 
-    /**
-     * Increase order count Handler
-     */
-    const increaseOrderCountHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-        event.preventDefault();
-        dispatch(increaseProductCount(productId));
-    };
+        /**
+         * Increase order count Handler
+         */
+        const increaseOrderCountHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+            event.preventDefault();
+            dispatch(increaseProductCount(productId));
+        };
 
-    /**
-     * Decrease order count Handler
-     */
-    const decreaseOrderCountHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-        event.preventDefault();
-        dispatch(decreaseProductCount(productId));
-    };
+        /**
+         * Decrease order count Handler
+         */
+        const decreaseOrderCountHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+            event.preventDefault();
+            dispatch(decreaseProductCount(productId));
+        };
 
-    /**
-     * OnChange handler for prompt counter
-     */
-    const onChangeTextInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue: number = R.pathOr(count, ['target', 'value'], event);
+        /**
+         * OnChange handler for prompt counter
+         */
+        const onChangeTextInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+            const inputValue: number = R.pathOr(count, ['target', 'value'], event);
 
-        setUpdatedCount(inputValue);
-    };
+            setUpdatedCount(inputValue);
+        };
 
-    /**
-     * OnChange handler for prompt counter
-     */
-    const onBlurCountInputHandler = () => {
-        if (updatedCount === count) return;
+        /**
+         * OnChange handler for prompt counter
+         */
+        const onBlurCountInputHandler = () => {
+            if (updatedCount === count) return;
 
-        dispatch(updateProductCount(productId, updatedCount));
-    };
+            dispatch(updateProductCount(productId, updatedCount));
+        };
 
-    return useMemo(
-        () => ({
+        return {
             removeProductFromOrderHandler,
             increaseOrderCountHandler,
             decreaseOrderCountHandler,
             onChangeTextInputHandler,
             onBlurCountInputHandler,
             updatedCount,
-        }),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [productId, count, updatedCount],
-    );
+        };
+    }, [count, dispatch, productId, updatedCount]);
 };
 
 export default useCounter;

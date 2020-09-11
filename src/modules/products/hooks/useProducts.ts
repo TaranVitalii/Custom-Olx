@@ -48,25 +48,25 @@ const useProducts = () => {
         setMaxPriceValue(inputValue);
     };
 
-    /**
-     * OnChange handler
-     */
-    const onChangeOriginsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const isChecked: boolean = R.pathOr(false, ['target', 'checked'], event);
-        const checkedValue: string | null = R.pathOr(null, ['target', 'value'], event);
+    return useMemo(() => {
+        /**
+         * OnChange handler
+         */
+        const onChangeOriginsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+            const isChecked: boolean = R.pathOr(false, ['target', 'checked'], event);
+            const checkedValue: string | null = R.pathOr(null, ['target', 'value'], event);
 
-        if (R.isNil(checkedValue) && R.isNil(checkedValue)) return;
+            if (R.isNil(checkedValue) && R.isNil(checkedValue)) return;
 
-        if (isChecked) {
-            setSelectedOrigin([...selectedOrigin, checkedValue]);
-        } else {
-            const updatedSelectedOrigins = selectedOrigin.filter((item) => item !== checkedValue);
-            setSelectedOrigin(updatedSelectedOrigins);
-        }
-    };
+            if (isChecked) {
+                setSelectedOrigin([...selectedOrigin, checkedValue]);
+            } else {
+                const updatedSelectedOrigins = selectedOrigin.filter((item) => item !== checkedValue);
+                setSelectedOrigin(updatedSelectedOrigins);
+            }
+        };
 
-    return useMemo(
-        () => ({
+        return {
             productsList,
             productsOriginsList,
             onChangeHandler: onChangeOriginsHandler,
@@ -75,10 +75,8 @@ const useProducts = () => {
             pageCount,
             currentPage: page,
             setPage,
-        }),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [productsList, productsOriginsList, selectedOrigin, minPriceValue, maxPriceValue, pageCount, page],
-    );
+        };
+    }, [productsList, productsOriginsList, pageCount, page, selectedOrigin]);
 };
 
 export default useProducts;
