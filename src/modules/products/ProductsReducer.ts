@@ -1,14 +1,34 @@
 import * as R from 'ramda';
 import { createSelector } from 'reselect';
 
-import { FETCH_PRODUCTS, FETCH_PRODUCT_BY_ID, ADD_TO_BAG } from './ProductsActions';
-import { successAction, failureAction } from '../../store/type';
-import calcAllPrice from './helpers/calcAllPrice';
-import { productSummaryProps, createOrderProps, createOrderListProps } from '../../interfaces';
+import { successAction, failureAction } from 'store/type';
+import {
+    productSummaryProps,
+    productsConfigProps,
+    createOrderProps,
+    createOrderListProps,
+    productsOriginsProps,
+} from 'interfaces';
+
+import { calcAllPrice, filterById, calcPageCount } from './helpers';
+import {
+    FETCH_PRODUCTS,
+    FETCH_PRODUCT_BY_ID,
+    ADD_TO_BAG,
+    REMOVE_FROM_ORDER,
+    INCREASE_PRODUCT_COUNT,
+    DECREASE_PRODUCT_COUNT,
+    UPDATE_PRODUCT_COUNT,
+    FETCH_PRODUCTS_ORIGINS,
+} from './ProductsActions';
+
+export const STATE_KEY = 'products';
 
 interface initialStateProps {
-    productsReducer: {
+    [STATE_KEY]: {
         productsList: Array<productSummaryProps>;
+        productsResponseConfig: productsConfigProps;
+        productsOrigins: productsOriginsProps;
         currentProduct: productSummaryProps;
         order: createOrderProps;
     };
@@ -16,9 +36,11 @@ interface initialStateProps {
 
 const initialState = {
     productsList: null,
+    productsResponseConfig: null,
     currentProduct: null,
+    productsOrigins: null,
     order: {
-        pieces: null,
+        pieces: [],
     },
 };
 
@@ -26,10 +48,18 @@ export default function Products(state = initialState, action: any) {
     switch (action.type) {
         case successAction(FETCH_PRODUCTS):
             const productsList = R.path(['payload', 'items'], action);
+            const page = R.path(['payload', 'page'], action);
+            const perPage = R.path(['payload', 'perPage'], action);
+            const totalItems = R.path(['payload', 'totalItems'], action);
 
             return {
                 ...state,
                 productsList,
+                productsResponseConfig: {
+                    page,
+                    perPage,
+                    totalItems,
+                },
             };
         case failureAction(FETCH_PRODUCTS):
             return {
@@ -48,12 +78,34 @@ export default function Products(state = initialState, action: any) {
                 productsList: null,
             };
         case successAction(ADD_TO_BAG):
+        case successAction(INCREASE_PRODUCT_COUNT):
+        case successAction(DECREASE_PRODUCT_COUNT):
+        case successAction(UPDATE_PRODUCT_COUNT):
             const updatedPieces = R.prop('payload', action);
-            console.log('sss', updatedPieces);
+
             return {
                 ...state,
                 order: {
                     pieces: updatedPieces,
+                },
+            };
+        case successAction(FETCH_PRODUCTS_ORIGINS):
+            const productsOrigins = R.path(['payload', 'items'], action);
+
+            return {
+                ...state,
+                productsOrigins,
+            };
+        case REMOVE_FROM_ORDER:
+            const productId: string | null = R.pathOr(null, ['payload', 'productId'], action);
+            const order: createOrderListProps[] = R.pathOr([], ['order', 'pieces'], state);
+
+            const filteredOrder = filterById(productId, order);
+
+            return {
+                ...state,
+                order: {
+                    pieces: filteredOrder,
                 },
             };
         default:
@@ -62,16 +114,37 @@ export default function Products(state = initialState, action: any) {
 }
 
 export const getProductsSelector = (state: initialStateProps): Array<productSummaryProps> =>
-    R.pathOr([], ['productsReducer', 'productsList'], state);
+    R.pathOr([], [STATE_KEY, 'productsList'], state);
 
 export const getCurrentProductSelector = (state: initialStateProps): productSummaryProps | null =>
-    R.pathOr(null, ['productsReducer', 'currentProduct'], state);
+    R.pathOr(null, [STATE_KEY, 'currentProduct'], state);
 
 export const getOrderPiecesSelector = (state: initialStateProps): createOrderListProps[] | null =>
-    R.pathOr(null, ['productsReducer', 'order', 'pieces'], state);
+    R.pathOr(null, [STATE_KEY, 'order', 'pieces'], state);
+
+export const getProductsOrigins = (state: initialStateProps): productsOriginsProps[] | null =>
+    R.pathOr(null, [STATE_KEY, 'productsOrigins'], state);
+
+export const getProductsConfig = (state: initialStateProps): productsConfigProps | null =>
+    R.pathOr(null, [STATE_KEY, 'productsResponseConfig'], state);
+
+export const getProductsConfigSelector = createSelector(getProductsConfig, (productsConfig) => {
+    const totalItems: number | null = R.propOr(null, 'totalItems', productsConfig);
+    const perPage: number | null = R.propOr(null, 'perPage', productsConfig);
+    const currentPage: number = R.propOr(1, 'page', productsConfig);
+
+    const pageCount = calcPageCount(totalItems, perPage);
+
+    return {
+        currentPage,
+        pageCount,
+    };
+});
+
+export const getProductsOriginsSelector = createSelector(getProductsOrigins, (productsOrigins) => productsOrigins);
 
 export const getTotalPrice = (state: initialStateProps): number => {
-    const pieces = R.pathOr([], ['productsReducer', 'order', 'pieces'], state);
+    const pieces = R.pathOr([], [STATE_KEY, 'order', 'pieces'], state);
     const products = getProductsSelector(state);
     const totalCount = calcAllPrice(pieces, products);
 

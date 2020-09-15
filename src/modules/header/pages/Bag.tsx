@@ -4,12 +4,13 @@ import Loader from 'react-loader-spinner';
 import { useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 
-import locale from '../../../locale';
-import Container from '../../../components/Container';
-import { getProductFromOrder, getTotalPrice } from '../../products/ProductsReducer';
+import locale from 'locale';
+import Container from 'components/Container';
+import { getProductFromOrder, getTotalPrice } from 'modules/products/ProductsReducer';
+import IsEmpty from 'components/IsEmpty';
+import Theme from 'components/Theme';
+
 import ProductInBagCard from '../components/ProductInBagCard';
-import IsEmpty from '../../../components/IsEmpty';
-import Theme from '../../../components/Theme';
 
 const Bag = () => {
     const order = useSelector(getProductFromOrder, shallowEqual);
@@ -17,6 +18,7 @@ const Bag = () => {
 
     return (
         <>
+            {!R.isNil(order) && !R.isEmpty(order) && <TotalPrice>{`${locale.totalPrice} ${totalPrice}`}</TotalPrice>}
             {!R.isNil(order) && !R.isEmpty(order) ? (
                 <ContainerWrapper>
                     {order.map((item: any) => (
@@ -32,7 +34,6 @@ const Bag = () => {
                     <Loader type="Grid" color={Theme.backgroundsColor.gray} height={80} width={80} />
                 </Wrapper>
             )}
-            {!R.isNil(order) && !R.isEmpty(order) && <TotalPrice>{`${locale.totalPrice} ${totalPrice}`}</TotalPrice>}
         </>
     );
 };
@@ -44,15 +45,18 @@ const Wrapper = styled.div`
 `;
 
 const ContainerWrapper = styled(Container)`
+    padding-left: 200px;
+    padding-right: 200px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 `;
 
 const TotalPrice = styled.div`
-    position: absolute;
-    top: 120px;
-    right: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
     color: ${({ theme }) => theme.textColors.green};
     ${({ theme }) => theme.fontStyles.h3};
 `;

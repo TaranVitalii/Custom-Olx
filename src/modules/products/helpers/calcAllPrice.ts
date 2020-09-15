@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { createOrderListProps, productSummaryProps } from '../../../interfaces';
+import { createOrderListProps, productSummaryProps } from 'interfaces';
 
 const calcAllPrice = (pieces: createOrderListProps[], products: productSummaryProps[]): number => {
     if (R.isEmpty(pieces) || R.isNil(pieces)) return 0;

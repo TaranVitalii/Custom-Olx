@@ -1,6 +1,7 @@
 import { applyMiddleware } from 'redux';
-import sagas, { run as runSagas } from '../rootSaga';
 import { composeWithDevTools } from 'redux-devtools-extension';
+
+import sagas, { run as runSagas } from '../rootSaga';
 
 const middleware = [sagas];
 

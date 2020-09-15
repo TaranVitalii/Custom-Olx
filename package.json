@@ -12,6 +12,7 @@
         "@types/react": "^16.9.0",
         "@types/react-dom": "^16.9.0",
         "@types/react-loader-spinner": "^3.1.0",
+        "axios": "^0.20.0",
         "moment": "^2.27.0",
         "ramda": "^0.27.1",
         "react": "^16.13.1",
@@ -28,10 +29,10 @@
         "typescript": "~3.7.2"
     },
     "scripts": {
-        "lint": "eslint --ext .ts --ext .tsx src && tsc -p src && stylelint src/**/*.{ts,tsx}",
+        "lint": "eslint --ext .ts --ext .tsx src && tsc -p ./ && stylelint src/**/*.{ts,tsx}",
         "lint:js": "eslint --ext .ts --ext .tsx src",
         "lint:css": "stylelint src/**/*.{ts,tsx}",
-        "lint:types": "tsc -p src",
+        "lint:types": "tsc -p ./",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",

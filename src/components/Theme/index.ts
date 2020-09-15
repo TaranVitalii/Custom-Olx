@@ -3,6 +3,7 @@ import { DefaultTheme } from 'styled-components';
 const theme: DefaultTheme = {
     backgroundsColor: {
         gray: '#C0C0C0',
+        blackOpacity: 'rgba(0, 0, 0, 0.2)',
     },
     textColors: {
         green: '#008000',
@@ -22,6 +23,9 @@ const theme: DefaultTheme = {
         p2: `font-size:18px;
         font-weight:400;
         line-height:22px;`,
+        p3: `font-size:16px;
+        font-weight:400;
+        line-height:20px;`,
     },
 };
 

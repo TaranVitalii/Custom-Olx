@@ -3,14 +3,15 @@ import React from 'react';
 import Loader from 'react-loader-spinner';
 import styled from 'styled-components';
 
+import Container from 'components/Container';
+import Theme from 'components/Theme';
+import IsEmpty from 'components/IsEmpty';
+import locale from 'locale';
+
 import useProductInfo from '../hooks/useProductInfo';
-import Container from '../../../components/Container';
-import locale from '../../../locale';
-import Theme from '../../../components/Theme';
-import IsEmpty from '../../../components/IsEmpty';
 
 const ProductInfo = () => {
-    const { currentProduct, name, price, origin, createdAtFormated, updatedAtFormated } = useProductInfo();
+    const { currentProduct, name, price, origin, createdAtFormatted, updatedAtFormatted } = useProductInfo();
 
     return (
         <Container>
@@ -26,11 +27,11 @@ const ProductInfo = () => {
                     </Row>
                     <Row>
                         <ProductField>{locale.createdAt}</ProductField>
-                        <ProductField>{createdAtFormated}</ProductField>
+                        <ProductField>{createdAtFormatted}</ProductField>
                     </Row>
                     <Row>
                         <ProductField>{locale.updatedAt}</ProductField>
-                        <ProductField>{updatedAtFormated}</ProductField>
+                        <ProductField>{updatedAtFormatted}</ProductField>
                     </Row>
                     <Row>
                         <ProductField>{locale.origin}</ProductField>

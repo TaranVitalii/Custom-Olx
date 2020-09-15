@@ -11,6 +11,8 @@ enum locale {
     origin = 'Origin',
     count = 'Count',
     totalPrice = 'Total Price',
+    minPrice = 'Min price',
+    maxPrice = 'Max price',
 }
 
 export default locale;

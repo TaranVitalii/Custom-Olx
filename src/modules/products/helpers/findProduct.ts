@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { createOrderListProps } from '../../../interfaces';
+import { createOrderListProps } from 'interfaces';
 
 const findProduct = (productId: string | null, pieces: createOrderListProps[]): createOrderListProps | null => {
     const duplicateProduct = pieces.find((piece) => {
