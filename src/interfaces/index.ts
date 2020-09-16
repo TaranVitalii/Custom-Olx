@@ -59,6 +59,10 @@ export interface orderProps {
 
 export interface productsListProps {
     product: productSummaryProps;
+    isEditable: boolean;
+    showEditModal:
+        | ((event: React.MouseEvent<HTMLImageElement, MouseEvent>, product: productSummaryProps) => void)
+        | null;
 }
 
 export interface pageProps {
@@ -66,6 +70,7 @@ export interface pageProps {
     origins: string[] | null;
     minPrice: number | null;
     maxPrice: number | null;
+    editable: boolean | null;
 }
 
 export interface productsOriginsProps {
@@ -99,3 +104,31 @@ export interface MaxMinProps {
     onBlurMinPriceHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onBlurMaxPriceHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
+export interface PortalProps {
+    children?: React.ReactNode;
+}
+
+export interface productProps {
+    product: {
+        name: string;
+        price: number;
+        origin: string;
+    };
+    setCreatedStatus: (arg: string | null) => void;
+    setIsLoading: (arg: boolean) => void;
+}
+
+export interface productPropsRequest {
+    product: {
+        name: string;
+        price: number;
+        origin: string;
+    };
+}
+
+export type productTypes = {
+    name: string;
+    price: number;
+    origin: string;
+};
