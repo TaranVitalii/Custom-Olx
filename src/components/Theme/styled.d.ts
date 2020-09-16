@@ -6,10 +6,12 @@ declare module 'styled-components' {
         backgroundsColor: {
             gray: string;
             blackOpacity: string;
+            darkGray: string;
         };
         textColors: {
             green: string;
             white: string;
+            red: string;
         };
         fontStyles: {
             h1: string;
