@@ -1,24 +1,51 @@
 import * as R from 'ramda';
-import React from 'react';
+import React, { useCallback } from 'react';
 import Loader from 'react-loader-spinner';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import locale from 'locale';
 import Container from 'components/Container';
-import { getProductFromOrder, getTotalPrice } from 'modules/products/ProductsReducer';
+import { getProductFromOrder, getTotalPrice, getOrderPiecesSelector } from 'modules/products/ProductsReducer';
 import IsEmpty from 'components/IsEmpty';
 import Theme from 'components/Theme';
+import Button from 'components/Button';
 
 import ProductInBagCard from '../components/ProductInBagCard';
+import { createOrder } from '../HeaderActions';
 
 const Bag = () => {
+    const dispatch = useDispatch();
     const order = useSelector(getProductFromOrder, shallowEqual);
     const totalPrice = useSelector(getTotalPrice, shallowEqual);
+    const orderPieces = useSelector(getOrderPiecesSelector, shallowEqual);
+
+    /**
+     * Create order handler
+     */
+    const createOrderHandler = useCallback((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault();
+
+        if (!R.isNil(orderPieces)) {
+            dispatch(
+                createOrder({
+                    order: {
+                        pieces: orderPieces,
+                    },
+                }),
+            );
+        }
+    }, []);
 
     return (
         <>
             {!R.isNil(order) && !R.isEmpty(order) && <TotalPrice>{`${locale.totalPrice} ${totalPrice}`}</TotalPrice>}
+            {!R.isNil(order) && !R.isEmpty(order) && (
+                <Wrapper>
+                    <Button onClick={createOrderHandler}>{locale.createOrder}</Button>
+                </Wrapper>
+            )}
+
             {!R.isNil(order) && !R.isEmpty(order) ? (
                 <ContainerWrapper>
                     {order.map((item: any) => (

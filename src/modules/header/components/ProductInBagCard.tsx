@@ -8,6 +8,7 @@ import CounterButton from 'components/Counter/Button';
 import CounterInput from 'components/Counter/Input';
 
 import removeImage from '../assets/removeImage.png';
+import removeRedImage from '../assets/removeRedImage.png';
 import useCounter from '../hooks/useCounter';
 
 const ProductInBagCard = ({ product }: updatedProductProps) => {
@@ -31,7 +32,10 @@ const ProductInBagCard = ({ product }: updatedProductProps) => {
         <Container>
             <TopContent>
                 <ProductName>{name}</ProductName>
-                <Image src={removeImage} onClick={removeProductFromOrderHandler} />
+                <RemoveButtonWrapper>
+                    <Image src={removeImage} onClick={removeProductFromOrderHandler} />
+                    <HoverImage src={removeRedImage} onClick={removeProductFromOrderHandler} />
+                </RemoveButtonWrapper>
             </TopContent>
             <BottomContent>
                 <Date>{date}</Date>
@@ -64,6 +68,22 @@ const CounterWrapper = styled(CounterInput)`
 const Image = styled.img`
     width: 32px;
     height: 32px;
+`;
+
+const HoverImage = styled.img`
+    width: 32px;
+    height: 32px;
+    display: none;
+`;
+
+const RemoveButtonWrapper = styled.div`
+    &:hover ${Image} {
+        display: none;
+    }
+
+    &:hover ${HoverImage} {
+        display: inline;
+    }
 `;
 
 const Container = styled.div`
