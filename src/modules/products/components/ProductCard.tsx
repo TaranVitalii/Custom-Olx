@@ -7,10 +7,13 @@ import moment from 'moment';
 
 import { productsListProps } from 'interfaces';
 
-import ShopingBag from '../assets/shopping-bag.png';
+import EditableOpacity from '../assets/editOpacity.png';
+import EditableBlack from '../assets/editBlack.png';
+import ShoppingBasketBlack from '../assets/shopping-basket.png';
+import ShoppingBasketOpacity from '../assets/supermarket.png';
 import { addToBag } from '../ProductsActions';
 
-const ProductCard = ({ product }: productsListProps) => {
+const ProductCard = ({ product, isEditable, showEditModal }: productsListProps) => {
     const dispatch = useDispatch();
 
     const productId = R.prop('id', product);
@@ -36,16 +39,67 @@ const ProductCard = ({ product }: productsListProps) => {
                 </TopContent>
                 <BottomContent>
                     <Date>{date}</Date>
-                    <AddToBagImage src={ShopingBag} onClick={addToBagHandler} />
+                    {!isEditable && (
+                        <AddToBagWrapper>
+                            <AddToBagImage src={ShoppingBasketOpacity} onClick={addToBagHandler} />
+                            <AddToBagHoverImage src={ShoppingBasketBlack} onClick={addToBagHandler} />
+                        </AddToBagWrapper>
+                    )}
+                    {isEditable && !R.isNil(showEditModal) && (
+                        <EditableWrapper>
+                            <EditableImage src={EditableOpacity} onClick={(event) => showEditModal(event, product)} />
+                            <EditableHoverImage
+                                src={EditableBlack}
+                                onClick={(event) => showEditModal(event, product)}
+                            />
+                        </EditableWrapper>
+                    )}
                 </BottomContent>
             </Container>
         </StyledLink>
     );
 };
 
+const EditableImage = styled.img`
+    width: 30px;
+    height: 30px;
+`;
+
+const EditableHoverImage = styled.img`
+    display: none;
+    width: 30px;
+    height: 30px;
+`;
+
+const EditableWrapper = styled.div`
+    &:hover ${EditableImage} {
+        display: none;
+    }
+
+    &:hover ${EditableHoverImage} {
+        display: inline;
+    }
+`;
+
 const AddToBagImage = styled.img`
     width: 30px;
     height: 30px;
+`;
+
+const AddToBagHoverImage = styled.img`
+    display: none;
+    width: 30px;
+    height: 30px;
+`;
+
+const AddToBagWrapper = styled.div`
+    &:hover ${AddToBagImage} {
+        display: none;
+    }
+
+    &:hover ${AddToBagHoverImage} {
+        display: inline;
+    }
 `;
 
 const StyledLink = styled(Link)`

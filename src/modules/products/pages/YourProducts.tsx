@@ -1,22 +1,26 @@
 import * as R from 'ramda';
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import Loader from 'react-loader-spinner';
 import styled from 'styled-components';
 
 import Container from 'components/Container';
-import IsEmpty from 'components/IsEmpty';
 import Theme from 'components/Theme';
+import IsEmpty from 'components/IsEmpty';
 import locale from 'locale';
 import { productSummaryProps } from 'interfaces';
-
-import Product from '../components/ProductCard';
-import useProducts from '../hooks/useProducts';
 import { createPageList } from '../helpers';
+
+import EditProductModal from '../components/EditProductModal';
+import Product from '../components/ProductCard';
 import Origin from '../components/Origin';
 import PagesListCounter from '../components/PagesListCounter';
 import MaxMinPrice from '../components/MaxMinPrice';
+import useProducts from '../hooks/useProducts';
 
-const Products = () => {
+const OrdersList = () => {
+    const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
+    const [currentProduct, setCurrentProduct] = useState<productSummaryProps | null>(null);
+
     const {
         productsList,
         productsOriginsList,
@@ -26,7 +30,27 @@ const Products = () => {
         pageCount,
         currentPage,
         setPage,
-    } = useProducts(null);
+    } = useProducts(true);
+
+    /**
+     * Show edit modal handler
+     */
+    const showEditModalHandler = useCallback(
+        (event: React.MouseEvent<HTMLImageElement, MouseEvent>, product: productSummaryProps) => {
+            event.preventDefault();
+            setIsVisibleModal(true);
+            setCurrentProduct(product);
+        },
+        [],
+    );
+
+    /**
+     * Close modal handler
+     */
+    const closeModalHandler = useCallback((event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+        event.preventDefault();
+        setIsVisibleModal(false);
+    }, []);
 
     return (
         <Container>
@@ -49,7 +73,7 @@ const Products = () => {
             <Content>
                 {!R.isNil(productsList) && !R.isEmpty(productsList) ? (
                     productsList.map((item: productSummaryProps) => (
-                        <Product key={item.id} product={item} isEditable={false} showEditModal={null} />
+                        <Product key={item.id} product={item} isEditable showEditModal={showEditModalHandler} />
                     ))
                 ) : R.isEmpty(productsList) ? (
                     <IsEmpty>{locale.productsListIsEmpty}</IsEmpty>
@@ -58,6 +82,7 @@ const Products = () => {
                 )}
             </Content>
             <PagesListCounter pageList={createPageList(pageCount)} currentPage={currentPage} setPage={setPage} />
+            {isVisibleModal && <EditProductModal closeModal={closeModalHandler} product={currentProduct} />}
         </Container>
     );
 };
@@ -82,4 +107,4 @@ const Content = styled.div`
     flex-wrap: wrap;
 `;
 
-export default Products;
+export default OrdersList;

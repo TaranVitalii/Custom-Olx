@@ -9,6 +9,7 @@ import {
     createOrderListProps,
     productsOriginsProps,
 } from 'interfaces';
+import { CREATE_ORDER } from 'modules/header/HeaderActions';
 
 import { calcAllPrice, filterById, calcPageCount } from './helpers';
 import {
@@ -19,6 +20,7 @@ import {
     INCREASE_PRODUCT_COUNT,
     DECREASE_PRODUCT_COUNT,
     UPDATE_PRODUCT_COUNT,
+    UPDATE_PRODUCT,
     FETCH_PRODUCTS_ORIGINS,
 } from './ProductsActions';
 
@@ -46,7 +48,7 @@ const initialState = {
 
 export default function Products(state = initialState, action: any) {
     switch (action.type) {
-        case successAction(FETCH_PRODUCTS):
+        case successAction(FETCH_PRODUCTS): {
             const productsList = R.path(['payload', 'items'], action);
             const page = R.path(['payload', 'page'], action);
             const perPage = R.path(['payload', 'perPage'], action);
@@ -61,26 +63,30 @@ export default function Products(state = initialState, action: any) {
                     totalItems,
                 },
             };
-        case failureAction(FETCH_PRODUCTS):
+        }
+        case failureAction(FETCH_PRODUCTS): {
             return {
                 ...state,
                 productsList: null,
             };
-        case successAction(FETCH_PRODUCT_BY_ID):
+        }
+        case successAction(FETCH_PRODUCT_BY_ID): {
             const currentProduct = R.path(['payload', 'product'], action);
             return {
                 ...state,
                 currentProduct,
             };
-        case failureAction(FETCH_PRODUCT_BY_ID):
+        }
+        case failureAction(FETCH_PRODUCT_BY_ID): {
             return {
                 ...state,
                 productsList: null,
             };
+        }
         case successAction(ADD_TO_BAG):
         case successAction(INCREASE_PRODUCT_COUNT):
         case successAction(DECREASE_PRODUCT_COUNT):
-        case successAction(UPDATE_PRODUCT_COUNT):
+        case successAction(UPDATE_PRODUCT_COUNT): {
             const updatedPieces = R.prop('payload', action);
 
             return {
@@ -89,14 +95,16 @@ export default function Products(state = initialState, action: any) {
                     pieces: updatedPieces,
                 },
             };
-        case successAction(FETCH_PRODUCTS_ORIGINS):
+        }
+        case successAction(FETCH_PRODUCTS_ORIGINS): {
             const productsOrigins = R.path(['payload', 'items'], action);
 
             return {
                 ...state,
                 productsOrigins,
             };
-        case REMOVE_FROM_ORDER:
+        }
+        case REMOVE_FROM_ORDER: {
             const productId: string | null = R.pathOr(null, ['payload', 'productId'], action);
             const order: createOrderListProps[] = R.pathOr([], ['order', 'pieces'], state);
 
@@ -108,6 +116,21 @@ export default function Products(state = initialState, action: any) {
                     pieces: filteredOrder,
                 },
             };
+        }
+        case successAction(UPDATE_PRODUCT): {
+            const productId: string | null = R.pathOr(null, ['payload', 'id'], action);
+            const updatedProduct = R.pathOr(null, ['payload'], action);
+            const productsList: productSummaryProps[] = R.propOr(null, 'productsList', state);
+
+            const productsListUpdated = productsList.map((product) =>
+                R.prop('id', product) === productId ? updatedProduct : product,
+            );
+
+            return { ...state, productsList: productsListUpdated };
+        }
+        case successAction(CREATE_ORDER): {
+            return { ...state, order: { pieces: [] } };
+        }
         default:
             return state;
     }
