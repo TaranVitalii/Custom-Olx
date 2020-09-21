@@ -4,6 +4,7 @@ import { all, takeEvery, call, put } from 'redux-saga/effects';
 import { createProductStatus } from 'models';
 import { createProductRequest, createOrderRequest } from 'services';
 import { productTypes, createOrderProps } from 'interfaces';
+import { fetchProducts } from 'modules/products/ProductsActions';
 
 import { createProductTypes, createOrderTypes, CREATE_PRODUCT, CREATE_ORDER } from './HeaderActions';
 import { successAction } from 'store/type';
@@ -28,6 +29,16 @@ function* createProductHandler(action: createProductTypes) {
         if (!R.isNil(product)) {
             const result = yield call(createProductRequest, { product });
 
+            // update products list
+            yield put(
+                fetchProducts({
+                    page: null,
+                    origins: null,
+                    maxPrice: null,
+                    minPrice: null,
+                    editable: true,
+                }),
+            );
             if (result && !R.isNil(setCreatedStatus) && !R.isNil(setIsLoading)) {
                 yield call(setCreatedStatus, createProductStatus.created);
                 yield call(setIsLoading, false);
