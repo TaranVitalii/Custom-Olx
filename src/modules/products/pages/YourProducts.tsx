@@ -8,7 +8,7 @@ import Theme from 'components/Theme';
 import IsEmpty from 'components/IsEmpty';
 import locale from 'locale';
 import { productSummaryProps } from 'interfaces';
-import { createPageList } from '../helpers';
+import { createPageList, isSelected } from '../helpers';
 
 import EditProductModal from '../components/EditProductModal';
 import Product from '../components/ProductCard';
@@ -25,10 +25,13 @@ const OrdersList = () => {
         productsList,
         productsOriginsList,
         onChangeHandler,
-        onBlurMinPriceHandler,
-        onBlurMaxPriceHandler,
+        onChangeMinPriceHandler,
+        onChangeMaxPriceHandler,
+        selectedOrigin,
         pageCount,
         currentPage,
+        maxPriceValue,
+        minPriceValue,
         setPage,
     } = useProducts(true);
 
@@ -60,14 +63,24 @@ const OrdersList = () => {
                         const displayName = R.prop('displayName', productsOrigins);
                         const value = R.prop('value', productsOrigins);
 
+                        const isChecked: boolean = isSelected(selectedOrigin, value);
+
                         return (
-                            <Origin key={index} name={displayName} value={value} onChangeHandler={onChangeHandler} />
+                            <Origin
+                                checked={isChecked}
+                                key={index}
+                                name={displayName}
+                                value={value}
+                                onChangeHandler={onChangeHandler}
+                            />
                         );
                     })}
                 </ProductsWrapper>
                 <MaxMinPrice
-                    onBlurMaxPriceHandler={onBlurMaxPriceHandler}
-                    onBlurMinPriceHandler={onBlurMinPriceHandler}
+                    maxPriceValue={maxPriceValue ? maxPriceValue : ''}
+                    minPriceValue={minPriceValue ? minPriceValue : ''}
+                    onChangeMaxPriceHandler={onChangeMaxPriceHandler}
+                    onChangeMinPriceHandler={onChangeMinPriceHandler}
                 />
             </FilteredField>
             <Content>

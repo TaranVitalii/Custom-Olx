@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import { originsProps } from 'interfaces';
 
-const Origin = ({ name, value, onChangeHandler }: originsProps) => (
+const Origin = ({ name, value, onChangeHandler, checked }: originsProps) => (
     <Container>
-        <input type="checkbox" value={value} onChange={onChangeHandler} />
+        <input type="checkbox" checked={checked} value={value} onChange={onChangeHandler} />
         <OriginName>{name}</OriginName>
     </Container>
 );
