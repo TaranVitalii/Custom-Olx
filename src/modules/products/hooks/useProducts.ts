@@ -7,7 +7,7 @@ import { productSummaryProps, productsOriginsProps, productsPageProps } from 'in
 import { fetchProducts, fetchProductsOrigins } from '../ProductsActions';
 import { getProductsSelector, getProductsOriginsSelector, getProductsConfigSelector } from '../ProductsReducer';
 
-const useProducts = () => {
+const useProducts = (editable: boolean | null) => {
     const dispatch = useDispatch();
     const productsList: productSummaryProps[] | null = useSelector(getProductsSelector, shallowEqual);
     const productsOriginsList: productsOriginsProps[] | null = useSelector(getProductsOriginsSelector, shallowEqual);
@@ -24,11 +24,12 @@ const useProducts = () => {
                 origins: selectedOrigin,
                 maxPrice: maxPriceValue,
                 minPrice: minPriceValue,
+                editable,
             }),
         );
         dispatch(fetchProductsOrigins());
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [maxPriceValue, minPriceValue, selectedOrigin, page]);
+    }, [maxPriceValue, minPriceValue, selectedOrigin, page, editable]);
 
     /**
      * OnChange min price handler

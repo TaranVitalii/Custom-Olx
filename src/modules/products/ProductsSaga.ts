@@ -1,8 +1,15 @@
 import * as R from 'ramda';
 import { all, takeEvery, call, put, select } from 'redux-saga/effects';
 
-import { fetchProductsRequest, fetchProductByIdRequest, fetchProductOriginsRequest } from 'services';
+import {
+    fetchProductsRequest,
+    fetchProductByIdRequest,
+    fetchProductOriginsRequest,
+    updateProductRequest,
+} from 'services';
 import { successAction, failureAction } from 'store/type';
+import { productTypes } from 'interfaces';
+import { createProductStatus } from 'models';
 
 import {
     FETCH_PRODUCTS,
@@ -12,12 +19,14 @@ import {
     DECREASE_PRODUCT_COUNT,
     UPDATE_PRODUCT_COUNT,
     FETCH_PRODUCTS_ORIGINS,
+    UPDATE_PRODUCT,
     increaseProductCountAction,
     decreaseProductCountAction,
     updateProductCountAction,
     fetchProductByIdAction,
     fetchProductsAction,
     addToBagAction,
+    updateProductTypes,
 } from './ProductsActions';
 import { getOrderPiecesSelector } from './ProductsReducer';
 import { checkProductExist, findProduct, increasePieceCount, decreasePieceCount, updatePieceCount } from './helpers';
@@ -27,10 +36,10 @@ import { checkProductExist, findProduct, increasePieceCount, decreasePieceCount,
  * */
 function* fetchProductsHandler(action: fetchProductsAction) {
     try {
-        const { page, origins, maxPrice, minPrice } = R.prop('payload', action);
+        const { page, origins, maxPrice, minPrice, editable } = R.prop('payload', action);
 
         // fetch get products
-        const result = yield call(fetchProductsRequest, { page, origins, maxPrice, minPrice });
+        const result = yield call(fetchProductsRequest, { page, origins, maxPrice, minPrice, editable });
 
         // check result exist
         if (result) {
@@ -189,6 +198,43 @@ function* updateProductCountSagaHandler(action: updateProductCountAction) {
 }
 
 /**
+ * Update product data
+ */
+function* updateProductHandler(action: updateProductTypes) {
+    const product: productTypes | null = R.pathOr(null, ['payload', 'product'], action);
+    const productId: string | null = R.pathOr(null, ['payload', 'productId'], action);
+
+    const setCreatedStatus: ((value: string | null) => void | undefined) | null = R.pathOr(
+        null,
+        ['payload', 'setCreatedStatus'],
+        action,
+    );
+    const setIsLoading: ((value: boolean) => void | undefined) | null = R.pathOr(
+        null,
+        ['payload', 'setIsLoading'],
+        action,
+    );
+
+    try {
+        if (!R.isNil(product)) {
+            const result = yield call(updateProductRequest, { product }, productId);
+
+            if (result && !R.isNil(setCreatedStatus) && !R.isNil(setIsLoading)) {
+                yield put({ type: successAction(UPDATE_PRODUCT), payload: result });
+                yield call(setCreatedStatus, createProductStatus.updated);
+                yield call(setIsLoading, false);
+            }
+        }
+    } catch (e) {
+        if (!R.isNil(setCreatedStatus) && !R.isNil(setIsLoading)) {
+            yield call(setCreatedStatus, createProductStatus.failed);
+            yield call(setIsLoading, false);
+        }
+        //show error modal
+    }
+}
+
+/**
  * Products Saga
  */
 function* productsSaga() {
@@ -200,6 +246,7 @@ function* productsSaga() {
         takeEvery(INCREASE_PRODUCT_COUNT, increaseProductCountSagaHandler),
         takeEvery(DECREASE_PRODUCT_COUNT, decreaseProductCountSagaHandler),
         takeEvery(UPDATE_PRODUCT_COUNT, updateProductCountSagaHandler),
+        takeEvery(UPDATE_PRODUCT, updateProductHandler),
     ]);
 }
 

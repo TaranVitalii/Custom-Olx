@@ -8,9 +8,13 @@ import { productSummaryProps } from '../../../interfaces';
 import { fetchProductById } from '../ProductsActions';
 import { getCurrentProductSelector } from '../ProductsReducer';
 
+type ProductIdTypes = {
+    productId: string;
+};
+
 const useProductInfo = () => {
     const dispatch = useDispatch();
-    const { productId } = useParams();
+    const { productId }: ProductIdTypes = useParams();
     const currentProduct: productSummaryProps | null = useSelector(getCurrentProductSelector, shallowEqual);
     const name: string | null = R.propOr(null, 'name', currentProduct);
     const price: string | null = R.propOr(null, 'price', currentProduct);

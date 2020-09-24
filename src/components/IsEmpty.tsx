@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const IsEmpty = styled.div`
+    margin-top: 40px;
     padding: 14px 16px;
     border-radius: 8px;
     background-color: ${({ theme }) => theme.backgroundsColor.gray};

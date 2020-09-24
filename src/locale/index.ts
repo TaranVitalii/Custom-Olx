@@ -1,6 +1,7 @@
 enum locale {
     marketProducts = 'Market products',
     yourBag = 'Your bag',
+    yourProducts = 'Your Products',
     yourBagIsEmpty = 'Your bag is empty',
     productsListIsEmpty = 'Products list is empty',
     productInfoIsEmpty = 'Product info is empty',
@@ -13,6 +14,13 @@ enum locale {
     totalPrice = 'Total Price',
     minPrice = 'Min price',
     maxPrice = 'Max price',
+    productName = 'Product Name',
+    createProduct = 'Create product',
+    yourProductCreated = 'Your product created',
+    creationFailed = 'Creation failed',
+    yourProductUpdated = 'Your product updated',
+    resetForm = 'Reset form',
+    createOrder = 'Create order',
 }
 
 export default locale;

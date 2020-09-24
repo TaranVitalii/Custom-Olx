@@ -4,10 +4,12 @@ const theme: DefaultTheme = {
     backgroundsColor: {
         gray: '#C0C0C0',
         blackOpacity: 'rgba(0, 0, 0, 0.2)',
+        darkGray: 'rgba(55, 64, 58,0.8)',
     },
     textColors: {
         green: '#008000',
         white: '#fff',
+        red: '#DC143C',
     },
     appBackground: '#fff',
     fontStyles: {
