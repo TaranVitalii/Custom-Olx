@@ -26,6 +26,7 @@ const useProducts = (editable: boolean | null) => {
     const minPrice: number | null = R.propOr(null, 'minPrice', queryParams);
     const maxPrice: number | null = R.propOr(null, 'maxPrice', queryParams);
     const queryOrigin: string[] | [] = R.propOr([], 'origins', queryParams);
+    const queryOriginFormatted = Array.isArray(queryOrigin) ? queryOrigin : [queryOrigin];
 
     const productsList: productSummaryProps[] | null = useSelector(getProductsSelector, shallowEqual);
     const productsOriginsList: productsOriginsProps[] | null = useSelector(getProductsOriginsSelector, shallowEqual);
@@ -34,7 +35,7 @@ const useProducts = (editable: boolean | null) => {
     const [page, setPage] = useState<number>(queryPage ? queryPage : currentPage);
     const [minPriceValue, setMinPriceValue] = useState<number | null>(minPrice);
     const [maxPriceValue, setMaxPriceValue] = useState<number | null>(maxPrice);
-    const [selectedOrigin, setSelectedOrigin] = useState<string[] | []>(queryOrigin);
+    const [selectedOrigin, setSelectedOrigin] = useState<string[] | []>(queryOriginFormatted);
     const url = queryString.stringify(
         {
             page,
@@ -91,8 +92,8 @@ const useProducts = (editable: boolean | null) => {
             } else {
                 const updatedSelectedOrigins = selectedOrigin.filter((item) => item !== checkedValue);
 
-                dispatch(callProductsWithDebounce());
                 setSelectedOrigin(updatedSelectedOrigins);
+                dispatch(callProductsWithDebounce());
             }
         };
 
