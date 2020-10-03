@@ -27,6 +27,8 @@ const useCreateProduct = () => {
     const origins = useSelector(getProductsOrigins, shallowEqual);
     const [createdStatus, setCreatedStatus] = useState<string | null>(null);
     const { register, setValue, handleSubmit, errors } = useForm<FormData>({
+        mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
         // validation schemas
         resolver: yupResolver(createProductSchema),
         defaultValues: {
@@ -39,17 +41,11 @@ const useCreateProduct = () => {
     /**
      * Validation form error
      */
-    const productNameErrorMessage: string = useMemo(() => R.pathOr('', [inputFields.productName, 'message'], errors), [
-        errors,
-    ]);
-    const productPriceErrorMessage: string = useMemo(
-        () => R.pathOr('', [inputFields.productPrice, 'message'], errors),
-        [errors],
-    );
-    const productOriginErrorMessage: string = useMemo(
-        () => R.pathOr('', [inputFields.productOrigin, 'message'], errors),
-        [errors],
-    );
+    const productNameErrorMessage: string = R.pathOr('', [inputFields.productName, 'message'], errors);
+
+    const productPriceErrorMessage: string = R.pathOr('', [inputFields.productPrice, 'message'], errors);
+
+    const productOriginErrorMessage: string = R.pathOr('', [inputFields.productOrigin, 'message'], errors);
 
     return useMemo(() => {
         /**
@@ -72,6 +68,7 @@ const useCreateProduct = () => {
          * On change product name handler
          */
         const onChangeProductNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setCreatedStatus(null);
             const inputValue: string = R.pathOr('', ['target', 'value'], event);
 
             setValue(inputFields.productName, inputValue);
@@ -81,6 +78,7 @@ const useCreateProduct = () => {
          * On change product price handler
          */
         const onChangeProductPriceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setCreatedStatus(null);
             const inputValue: number = R.pathOr(0, ['target', 'value'], event);
 
             setValue(inputFields.productPrice, inputValue);
@@ -90,6 +88,7 @@ const useCreateProduct = () => {
          * On change product origin handler
          */
         const onChangeProductOriginHandler = (selectedValue: OriginProps) => {
+            setCreatedStatus(null);
             const value: string | null = R.propOr(null, 'value', selectedValue);
 
             if (R.isNil(value)) return;

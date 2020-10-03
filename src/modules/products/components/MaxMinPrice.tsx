@@ -6,10 +6,25 @@ import locale from 'locale';
 
 import PriceInput from './PriceInput';
 
-const MaxMinPrice = ({ onBlurMinPriceHandler, onBlurMaxPriceHandler }: MaxMinProps) => (
+const MaxMinPrice = ({
+    onChangeMaxPriceHandler,
+    onChangeMinPriceHandler,
+    minPriceValue,
+    maxPriceValue,
+}: MaxMinProps) => (
     <PriceWrapper>
-        <PriceInput placeholderValue={locale.minPrice} onBlurHandler={onBlurMinPriceHandler} />
-        <PriceInput placeholderValue={locale.maxPrice} onBlurHandler={onBlurMaxPriceHandler} />
+        <PriceInput
+            type="number"
+            value={minPriceValue}
+            placeholder={locale.minPrice}
+            onChange={onChangeMinPriceHandler}
+        />
+        <PriceInput
+            type="number"
+            value={maxPriceValue}
+            placeholder={locale.maxPrice}
+            onChange={onChangeMaxPriceHandler}
+        />
     </PriceWrapper>
 );
 

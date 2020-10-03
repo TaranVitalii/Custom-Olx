@@ -2,6 +2,8 @@ import { pageProps, productProps } from 'interfaces';
 
 const namespace = 'PRODUCTS';
 export const FETCH_PRODUCTS = `${namespace}/GET_PRODUCTS`;
+export const CALL_PRODUCTS_DEBOUNCE_WATCHER = `${namespace}/CALL_PRODUCTS_DEBOUNCE_WATCHER`;
+export const FETCH_DEBOUNCE_PRODUCT = `${namespace}/GET_DEBOUNCE_PRODUCTS`;
 export const FETCH_PRODUCT_BY_ID = `${namespace}/FETCH_PRODUCT_BY_ID`;
 export const ADD_TO_BAG = `${namespace}/ADD_TO_BAG`;
 export const REMOVE_FROM_ORDER = `${namespace}/REMOVE_FROM_ORDER`;
@@ -20,6 +22,17 @@ export interface fetchProductByIdAction {
 
 export interface fetchProductsAction {
     type: typeof FETCH_PRODUCTS;
+    payload: {
+        page: number | null;
+        origins: string[] | null;
+        minPrice: number | null;
+        maxPrice: number | null;
+        editable: boolean | null;
+    };
+}
+
+export interface fetchDebounceProductsAction {
+    type: typeof FETCH_DEBOUNCE_PRODUCT;
     payload: {
         page: number | null;
         origins: string[] | null;
@@ -79,6 +92,21 @@ export const fetchProducts = ({ page, origins, minPrice, maxPrice, editable }: p
         maxPrice,
         editable,
     },
+});
+
+export const fetchDebounceProducts = ({ page, origins, minPrice, maxPrice, editable }: pageProps) => ({
+    type: FETCH_DEBOUNCE_PRODUCT,
+    payload: {
+        page,
+        origins,
+        minPrice,
+        maxPrice,
+        editable,
+    },
+});
+
+export const callProductsWithDebounce = () => ({
+    type: CALL_PRODUCTS_DEBOUNCE_WATCHER,
 });
 
 export const fetchProductById = (productId: string) => ({

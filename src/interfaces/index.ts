@@ -92,6 +92,7 @@ export interface productsPageProps {
 export interface originsProps {
     name: string;
     value: string;
+    checked: boolean;
     onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -101,8 +102,10 @@ export interface inputPriceProps {
 }
 
 export interface MaxMinProps {
-    onBlurMinPriceHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onBlurMaxPriceHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    minPriceValue: number | string;
+    maxPriceValue: number | string;
+    onChangeMaxPriceHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeMinPriceHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface PortalProps {

@@ -23,19 +23,22 @@ const Bag = () => {
     /**
      * Create order handler
      */
-    const createOrderHandler = useCallback((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault();
+    const createOrderHandler = useCallback(
+        (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            event.preventDefault();
 
-        if (!R.isNil(orderPieces)) {
-            dispatch(
-                createOrder({
-                    order: {
-                        pieces: orderPieces,
-                    },
-                }),
-            );
-        }
-    }, []);
+            if (!R.isNil(orderPieces)) {
+                dispatch(
+                    createOrder({
+                        order: {
+                            pieces: orderPieces,
+                        },
+                    }),
+                );
+            }
+        },
+        [dispatch, orderPieces],
+    );
 
     return (
         <>

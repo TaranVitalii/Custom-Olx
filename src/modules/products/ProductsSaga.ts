@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { all, takeEvery, call, put, select } from 'redux-saga/effects';
+import { all, takeEvery, call, put, select, debounce } from 'redux-saga/effects';
 
 import {
     fetchProductsRequest,
@@ -19,6 +19,7 @@ import {
     DECREASE_PRODUCT_COUNT,
     UPDATE_PRODUCT_COUNT,
     FETCH_PRODUCTS_ORIGINS,
+    CALL_PRODUCTS_DEBOUNCE_WATCHER,
     UPDATE_PRODUCT,
     increaseProductCountAction,
     decreaseProductCountAction,
@@ -27,6 +28,7 @@ import {
     fetchProductsAction,
     addToBagAction,
     updateProductTypes,
+    FETCH_DEBOUNCE_PRODUCT,
 } from './ProductsActions';
 import { getOrderPiecesSelector } from './ProductsReducer';
 import { checkProductExist, findProduct, increasePieceCount, decreasePieceCount, updatePieceCount } from './helpers';
@@ -235,11 +237,19 @@ function* updateProductHandler(action: updateProductTypes) {
 }
 
 /**
+ * Call products with debounce
+ */
+function* callProductDebounceHandler() {
+    yield debounce(2000, FETCH_DEBOUNCE_PRODUCT, fetchProductsHandler);
+}
+
+/**
  * Products Saga
  */
 function* productsSaga() {
     yield all([
         takeEvery(FETCH_PRODUCTS, fetchProductsHandler),
+        takeEvery(CALL_PRODUCTS_DEBOUNCE_WATCHER, callProductDebounceHandler),
         takeEvery(FETCH_PRODUCTS_ORIGINS, fetchProductsOriginsHandler),
         takeEvery(FETCH_PRODUCT_BY_ID, fetchProductByIdHandler),
         takeEvery(ADD_TO_BAG, addToBagSagaHandler),
